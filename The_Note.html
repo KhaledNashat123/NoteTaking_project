@@ -74,37 +74,32 @@
     </table>
 
     <script>
+        //AEFASDFSESDFSDFzASF_DFDF
+        var newNote = [];
         function saveNote() {
     var note = document.getElementById("note").value;
     var table = document.getElementById("noteTable");
     var row = table.insertRow(-1);
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
-    cell1.innerHTML = note ;
+    cell1.innerHTML = note;
     cell2.innerHTML = "<button onclick='editRow(this)' class='edit-btn'>Edit</button>" +
                       "<button onclick='deleteRow(this)' class='delete-btn'>Delete</button>";
     document.getElementById("note").value = '' ;
 
+
     
-    
+
     var usersData = JSON.parse(localStorage.getItem('allusers'));
     var k = localStorage.getItem('i');
     
-    let j ;
-    for ( j =0; j<usersData.length;i++) {
-        if (usersData[j][1] == k){
-            if (!usersData[j][4]) {
-                usersData[j][4] = []; // Initialize notes array if it doesn't exist
-            }
-            usersData[j][4].push(note);
+    for (let i =0; i<usersData.length;i++) {
+        if (usersData[i][1] == k){
+            newNote.push(note);
+            usersData[i][4]= newNote;
             localStorage.setItem('allusers', JSON.stringify(usersData));
-            break ;
         }
-    }
-    for(let k=0; k < usersData[j][4].length ; k++ ){
-    cell1.innerHTML = usersData[j][4][k] ;
-    cell2.innerHTML = "<button onclick='editRow(this)' class='edit-btn'>Edit</button>" +
-                      "<button onclick='deleteRow(this)' class='delete-btn'>Delete</button>";
+
     }
 }
 
