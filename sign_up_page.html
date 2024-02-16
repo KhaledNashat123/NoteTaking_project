@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            background-color: #161212;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sign_up{
+            width: 380px;
+            padding: 10px;
+            background-color: #326c34;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #326c34;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirmpassword" name="confirm-password" required>
+            </div>
+            <div class="form-group">
+                <button class="sign_up" type="submit" id="signup-form">Sign Up</button>
+            </div>
+        </form>
+        <p class="text-center">Already have an account? <a href="index.html">Log In</a></p>
+    </div>
+    <script>
+        var users = [];
+        
+        function signUp() {
+            alert('Signed Up Successfully !')
+            
+            var username = document.getElementById("username").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            var confirmpassword = document.getElementById("confirmpassword").value;
+            localStorage.setItem('i', email);
+            console.log(localStorage.getItem('i'));  /// i make this to add the notes to this user
+
+            class userss { 
+                constructor ( username , email , password , confirmpassword ) {
+                        this.username = username ;
+                        this.email = email ;
+                        this.password = password ;
+                        this.confirmpassword = confirmpassword ;
+                        users.push(this.username, this.email, this.password , this.confirmpassword)
+                        var arr = [];
+                }
+
+                storenote () {
+                    const user = JSON.parse(localStorage.getItem('allusers')) || [];
+                    user.push(users)
+                    localStorage.setItem('allusers', JSON.stringify(user));
+                }
+
+            }
+                let newUser = new userss(username, email, password, confirmpassword);
+                newUser.storenote();
+    
+            // var newUser = {
+            //     username: username,
+            //     email: email,
+            //     password: password,
+            //     confirmpassword: confirmpassword,
+            // };
+    
+            //users.push(newUser);
+    
+            document.getElementById("username").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("confirmpassword").value = "";
+
+
+            window.location.href = "The_Note.html"; // Redirect to The_Note.html
+            
+        }
+
+        
+        // function isUsernameTaken(username) {
+        //     for (var i = 0; i < users.length; i++) {
+        //         if (users[i].username === username) {
+        //             return true;
+        //         }
+        //     }
+        //     return false;
+        // }
+        
+        document.getElementById("signup-form").addEventListener("click", function (event) {
+
+            // if (isUsernameTaken(username)) {
+            //     alert("Username already taken. Please choose a different username.");
+            //     return;
+            // }
+            if (username.value =='' || email.value == '' || password.value == '' || confirmpassword.value == '') {
+            alert("Please Enter All Fields")
+            }
+            else if (password.value != confirmpassword.value ) {
+                alert(' Passwords is not identical')
+            }
+            else {
+            event.preventDefault(); 
+            signUp();
+            }
+        });
+        
+    </script>
+</body>
+
+</html>
