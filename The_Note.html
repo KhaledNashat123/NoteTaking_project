@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Taking App</title>
+    <style>
+        .heading {
+            margin-left: 630px;
+            margin-bottom: 40px;
+        font-size: xx-large;
+
+        } 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"]{
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 16px;
+            margin-right: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .edit-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading"> Take your notes</div>
+    <div>
+        <input type="text" id="note" placeholder="Enter a note" required>
+        <button onclick="saveNote()" class="save-btn">Save</button>
+    </div>
+    <table id="noteTable">
+        <tr>
+            <th>Note</th>
+            <th>Action</th>
+        </tr>
+    </table>
+
+    <script>
+        
+        function showNotes() {
+            let table = document.getElementById("noteTable");
+            table.innerHTML = '';
+            // get users data from local storage
+            let usersData = JSON.parse(localStorage.getItem('users'));
+            
+            // get current user using the currentUserID value
+            let currentUserID = JSON.parse(localStorage.getItem('currentUserID'));
+            let currentUser = usersData[currentUserID];
+
+            // insert notes into the table
+            for(let i = 0; i < currentUser.notes.length; ++i) {
+                let note = currentUser.notes[i];
+                let row = table.insertRow(-1);
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                cell1.innerHTML = note;
+                cell2.innerHTML = `<button onclick='deleteRow(${i})' class='delete-btn'>Delete</button>`;
+            }
+        }
+
+        showNotes();
+
+        function saveNote() {
+            var note = document.getElementById("note").value;
+
+            // get users data from local storage
+            let usersData = JSON.parse(localStorage.getItem('users'));
+            
+            // get current user using the currentUserID value
+            let currentUserID = JSON.parse(localStorage.getItem('currentUserID'));
+            let currentUser = usersData[currentUserID];
+            
+            // set the user notes to an empty array if it's empty
+            currentUser.notes = currentUser.notes || [];
+            
+            // push the new notes
+            currentUser.notes.push(note);
+
+            // update users data in the local storage
+            localStorage.setItem('users', JSON.stringify(usersData));
+
+            document.getElementById("note").value = '';
+
+            // rerender
+            showNotes();
+        }
+
+        function deleteRow(id) {
+            // get users data from local storage
+            let usersData = JSON.parse(localStorage.getItem('users'));
+            
+            // get current user using the currentUserID value
+            let currentUserID = JSON.parse(localStorage.getItem('currentUserID'));
+            let currentUser = usersData[currentUserID];
+            
+            // set the user notes to an empty array if it's empty
+            currentUser.notes = currentUser.notes || [];
+
+            currentUser.notes = currentUser.notes.filter((element, index) => index != id);
+
+            // update users data in the local storage
+            localStorage.setItem('users', JSON.stringify(usersData));
+
+            // rerender
+            showNotes();
+        }        
+    </script>
+</body>
+</html>
